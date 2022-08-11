@@ -8,10 +8,10 @@ namespace StudentMS_XiaoFengHuang_2195414.BLL
 {
     public class Student
     {
-        private String? id;
-        private string? firstName;
-        private string? lastName;
-        private string? phoneNumber;
+        private String id;
+        private string firstName;
+        private string lastName;
+        private string phoneNumber;
 
         public Student() { }
         public Student(string id, string? firstName, string? lastName, string? phoneNumber)

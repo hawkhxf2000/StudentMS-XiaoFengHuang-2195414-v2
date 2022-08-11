@@ -8,21 +8,7 @@ namespace StudentMS_XiaoFengHuang_2195414
         public FrmStudentMS()
         {
             InitializeComponent();
-            ListStudents();
-        }
-        private void ListStudents()
-        {
-            List<Student> students = StudentDAL.GetAllStudents();
-            students.ForEach(
-                el =>
-                {
-                    ListViewItem item = new ListViewItem(el.Id + "");
-                    item.SubItems.Add(el.FirstName);
-                    item.SubItems.Add(el.LastName);
-                    item.SubItems.Add(el.PhoneNumber);
-                    LvwStudent.Items.Add(item);
-                }
-            );
+            StudentDAL.ListStudents(LvwStudent);
         }
 
         private void ClearAll()
@@ -31,12 +17,54 @@ namespace StudentMS_XiaoFengHuang_2195414
             TbxFirstName.Clear();
             TbxLastName.Clear();
             MtxPhoneNumber.Clear();
-            TbxId.Focus();
+        }
+        private bool Verify(string id, string firstName, string lastName)
+        {
+            List<Student> students = StudentDAL.GetAllStudents();
+            if (id.Length != 7 || !id.All(char.IsDigit))
+            {
+                MessageBox.Show("The studnet ID must be 7 number digits only, please check it again!");
+                TbxId.Focus();
+                return false;
+            }
+            if (!firstName.All(Char.IsLetter))
+            {
+                MessageBox.Show("The first name must be letter only,  please check it again!");
+                TbxFirstName.Focus();
+                return false;
+            }
+            if (!lastName.All(Char.IsLetter))
+            {
+                MessageBox.Show("The last name must be letter only,  please check it again!");
+                TbxLastName.Focus();
+                return false;
+            }
+            
+            foreach (Student student in students)
+            {
+                if(student.Id == id)
+                {
+                    MessageBox.Show("The student ID has already existed in the list, please change the ID according to the list below!");
+                    TbxId.Focus();
+                    return false;
+                }
+            }
+            return true;
         }
 
+        private void ListSearchResult(List<Student> studentsFound)
+        {
+            LvwStudent.Items.Clear();
+            studentsFound.ForEach(el =>
+            {
+                String[] infoArray = { el.Id, el.FirstName, el.LastName, el.PhoneNumber };
+                ListViewItem item = new ListViewItem(infoArray);
+                LvwStudent.Items.Add(item);
+            });
+        }
         private void BtnList_Click(object sender, EventArgs e)
         {
-            ListStudents();
+            StudentDAL.ListStudents(LvwStudent);
         }
 
         private void BtnAdd_Click(object sender, EventArgs e)
@@ -47,9 +75,12 @@ namespace StudentMS_XiaoFengHuang_2195414
             string phoneNumber = MtxPhoneNumber.Text;
             Student student = new Student(id, firstName, lastName, phoneNumber);
 
-            StudentDAL.Save(student);
-            ListStudents();
-            ClearAll();
+            if(Verify(id, firstName, lastName))
+            {
+                StudentDAL.Save(student);
+                StudentDAL.ListStudents(LvwStudent);
+                ClearAll();
+            }  
         }
 
         private void BtnSave_Click(object sender, EventArgs e)
@@ -60,17 +91,84 @@ namespace StudentMS_XiaoFengHuang_2195414
             string phoneNumber = MtxPhoneNumber.Text;
             Student student = new Student(id, firstName, lastName, phoneNumber);
 
-            StudentDAL.Save(student);
-            ClearAll();
+            if (Verify(id, firstName, lastName))
+            {
+                StudentDAL.Save(student);
+                ClearAll();
+            }
         }
 
         private void BtnDelete_Click(object sender, EventArgs e)
         {
-            foreach(ListViewItem item in LvwStudent.SelectedItems)
+            string id = LvwStudent.SelectedItems[0].Text;
+            DialogResult answer = MessageBox.Show("Are you sure to delete the selected record?", "Confirmation",
+                 MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (answer == DialogResult.Yes)
             {
-                var id = item.SubItems[0].Text;
                 StudentDAL.Delete(id);
             }
+            StudentDAL.ListStudents(LvwStudent);
         }
+
+        private void BtnExit_Click(object sender, EventArgs e)
+        {
+            DialogResult answer = MessageBox.Show("Are you sure to exit the application?", "Confirmation",
+                 MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (answer == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+        }
+
+        private void FrmStudentMS_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void LvwStudent_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnSearch_Click(object sender, EventArgs e)
+        {
+            string id = "";
+            string firstName ="";
+            string lastName = "";
+            string phoneNumber = "";
+
+            int choice = CbxSearch.SelectedIndex;
+
+            switch (choice)
+            {
+                case -1:
+                     MessageBox.Show("Please select at least one search option");
+                      break;
+
+                case 0:
+                    id = TbxSearch.Text;
+                    break;
+
+                 case 1:
+                    firstName = TbxSearch.Text;
+                    break;
+
+                case 2:
+                    lastName = TbxSearch.Text;
+                    break;
+
+                case 3:
+                    phoneNumber = TbxSearch.Text;
+                    break;
+
+                default:
+                    break;
+            }
+
+            List<Student> studentsFound = StudentDAL.SearchStudents(id, firstName, lastName, phoneNumber);
+
+            ListSearchResult(studentsFound);
+        }
+
     }
 }

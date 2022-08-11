@@ -44,9 +44,13 @@
             this.BtnAdd = new System.Windows.Forms.Button();
             this.BtnSave = new System.Windows.Forms.Button();
             this.BtnDelete = new System.Windows.Forms.Button();
-            this.LvwStudent = new System.Windows.Forms.ListView();
             this.BtnList = new System.Windows.Forms.Button();
             this.BtnExit = new System.Windows.Forms.Button();
+            this.LvwStudent = new System.Windows.Forms.ListView();
+            this.Id = new System.Windows.Forms.ColumnHeader();
+            this.FirstName = new System.Windows.Forms.ColumnHeader();
+            this.LastName = new System.Windows.Forms.ColumnHeader();
+            this.PhoneNumber = new System.Windows.Forms.ColumnHeader();
             this.SuspendLayout();
             // 
             // label1
@@ -113,6 +117,7 @@
             // MtxPhoneNumber
             // 
             this.MtxPhoneNumber.Location = new System.Drawing.Point(259, 128);
+            this.MtxPhoneNumber.Mask = "(900)900-0000";
             this.MtxPhoneNumber.Name = "MtxPhoneNumber";
             this.MtxPhoneNumber.Size = new System.Drawing.Size(170, 23);
             this.MtxPhoneNumber.TabIndex = 7;
@@ -167,6 +172,7 @@
             this.BtnSearch.TabIndex = 12;
             this.BtnSearch.Text = "Search";
             this.BtnSearch.UseVisualStyleBackColor = true;
+            this.BtnSearch.Click += new System.EventHandler(this.BtnSearch_Click);
             // 
             // BtnAdd
             // 
@@ -201,14 +207,6 @@
             this.BtnDelete.UseVisualStyleBackColor = true;
             this.BtnDelete.Click += new System.EventHandler(this.BtnDelete_Click);
             // 
-            // LvwStudent
-            // 
-            this.LvwStudent.Location = new System.Drawing.Point(49, 321);
-            this.LvwStudent.Name = "LvwStudent";
-            this.LvwStudent.Size = new System.Drawing.Size(576, 190);
-            this.LvwStudent.TabIndex = 16;
-            this.LvwStudent.UseCompatibleStateImageBehavior = false;
-            // 
             // BtnList
             // 
             this.BtnList.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
@@ -229,15 +227,55 @@
             this.BtnExit.TabIndex = 18;
             this.BtnExit.Text = "Exit";
             this.BtnExit.UseVisualStyleBackColor = true;
+            this.BtnExit.Click += new System.EventHandler(this.BtnExit_Click);
+            // 
+            // LvwStudent
+            // 
+            this.LvwStudent.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Id,
+            this.FirstName,
+            this.LastName,
+            this.PhoneNumber});
+            this.LvwStudent.FullRowSelect = true;
+            this.LvwStudent.GridLines = true;
+            this.LvwStudent.Location = new System.Drawing.Point(49, 311);
+            this.LvwStudent.Name = "LvwStudent";
+            this.LvwStudent.Size = new System.Drawing.Size(576, 215);
+            this.LvwStudent.TabIndex = 19;
+            this.LvwStudent.UseCompatibleStateImageBehavior = false;
+            this.LvwStudent.View = System.Windows.Forms.View.Details;
+            // 
+            // Id
+            // 
+            this.Id.Text = "ID";
+            this.Id.Width = 70;
+            // 
+            // FirstName
+            // 
+            this.FirstName.Text = "First Name";
+            this.FirstName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.FirstName.Width = 150;
+            // 
+            // LastName
+            // 
+            this.LastName.Text = "Last Name";
+            this.LastName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.LastName.Width = 150;
+            // 
+            // PhoneNumber
+            // 
+            this.PhoneNumber.Text = "Phone Number";
+            this.PhoneNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.PhoneNumber.Width = 180;
             // 
             // FrmStudentMS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(683, 682);
+            this.Controls.Add(this.LvwStudent);
             this.Controls.Add(this.BtnExit);
             this.Controls.Add(this.BtnList);
-            this.Controls.Add(this.LvwStudent);
             this.Controls.Add(this.BtnDelete);
             this.Controls.Add(this.BtnSave);
             this.Controls.Add(this.BtnAdd);
@@ -256,6 +294,7 @@
             this.Controls.Add(this.label1);
             this.Name = "FrmStudentMS";
             this.Text = "XiaoFengHuang-2195414-20220811";
+            this.Load += new System.EventHandler(this.FrmStudentMS_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -279,8 +318,12 @@
         private Button BtnAdd;
         private Button BtnSave;
         private Button BtnDelete;
-        private ListView LvwStudent;
         private Button BtnList;
         private Button BtnExit;
+        private ListView LvwStudent;
+        private ColumnHeader Id;
+        private ColumnHeader FirstName;
+        private ColumnHeader LastName;
+        private ColumnHeader PhoneNumber;
     }
 }
