@@ -19,15 +19,20 @@ namespace StudentMS_XiaoFengHuang_2195414
             TbxLastName.Clear();
             MtxPhoneNumber.Clear();
         }
+
+        //Verify if all parameters meet the criterias 
         private bool Verify(string id, string firstName, string lastName)
         {
             List<Student> students = StudentDAL.GetAllStudents();
+            //Student ID must be 7 digits of number
             if (id.Length != 7 || !id.All(char.IsDigit))
             {
                 MessageBox.Show("The studnet ID must be 7 number digits only, please check it again!");
                 TbxId.Focus();
                 return false;
             }
+
+            //First Name and Last name only be text data type
             if (!firstName.All(Char.IsLetter))
             {
                 MessageBox.Show("The first name must be letter only,  please check it again!");
@@ -41,6 +46,7 @@ namespace StudentMS_XiaoFengHuang_2195414
                 return false;
             }
             
+            //Student ID should be unique
             foreach (Student student in students)
             {
                 if(student.Id == id)
@@ -76,7 +82,8 @@ namespace StudentMS_XiaoFengHuang_2195414
             string phoneNumber = MtxPhoneNumber.Text;
             Student student = new Student(id, firstName, lastName, phoneNumber);
 
-            if(Verify(id, firstName, lastName))
+            //verify all information meet the criterias
+            if (Verify(id, firstName, lastName))
             {
                 StudentDAL.Save(student);
                 StudentDAL.ListStudents(LvwStudent);
@@ -86,12 +93,14 @@ namespace StudentMS_XiaoFengHuang_2195414
 
         private void BtnSave_Click(object sender, EventArgs e)
         {
+            //Get parameters and construct a new object of Student
             string id = TbxId.Text;
             string firstName = TbxFirstName.Text;
             string lastName = TbxLastName.Text;
             string phoneNumber = MtxPhoneNumber.Text;
             Student student = new Student(id, firstName, lastName, phoneNumber);
 
+            //verify all information meet the criterias
             if (Verify(id, firstName, lastName))
             {
                 StudentDAL.Save(student);
@@ -100,7 +109,8 @@ namespace StudentMS_XiaoFengHuang_2195414
         }
 
         private void BtnDelete_Click(object sender, EventArgs e)
-        {
+        { 
+            //Get the Student id from selected item of table
             string id = LvwStudent.SelectedItems[0].Text;
             DialogResult answer = MessageBox.Show("Are you sure to delete the selected record?", "Confirmation",
                  MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -132,16 +142,20 @@ namespace StudentMS_XiaoFengHuang_2195414
         }
 
         private void BtnSearch_Click(object sender, EventArgs e)
-        {
+        { 
+            //Set default values of different properties for dynamic query
             string id = "";
             string firstName ="";
             string lastName = "";
             string phoneNumber = "";
 
+            //Get the query criteria
             int choice = CbxSearch.SelectedIndex;
 
+            //Set query parameter for dynamic searching function
             switch (choice)
-            {
+            { 
+                //remind user to choose one option
                 case -1:
                      MessageBox.Show("Please select at least one search option");
                       break;
@@ -160,6 +174,7 @@ namespace StudentMS_XiaoFengHuang_2195414
 
                 case 3:
                     phoneNumber = TbxSearch.Text;
+                    //extract all numbers in phonenumer which the user input, and then wrapp it to same format of record
                     string number = Regex.Replace(phoneNumber, @"[^0-9]+", "");
                     phoneNumber ="(" +number.Substring(0,3) + ")" + number.Substring(3,3) +"-" +number.Substring(6,4);
                     break;
@@ -168,13 +183,17 @@ namespace StudentMS_XiaoFengHuang_2195414
                     break;
             }
 
+            //Get the result of dynamic query
             List<Student> studentsFound = StudentDAL.SearchStudents(id, firstName, lastName, phoneNumber);
 
+            //check if there is no record found
             if (studentsFound.Count == 0)
             {
                 MessageBox.Show("There is no student found");
                 return;
             }
+
+            //Display the information of the found student on text boxes
             TbxId.Text = studentsFound[0].Id;
             TbxFirstName.Text = studentsFound[0].FirstName;
             TbxLastName.Text = studentsFound[0].LastName;

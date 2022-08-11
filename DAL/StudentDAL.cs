@@ -28,6 +28,8 @@ namespace StudentMS_XiaoFengHuang_2195414.DAL
             StreamReader sReader = new StreamReader(filePath);
 
             List<Student> students = new List<Student>();
+
+            //Read the string line by line and save it to a list of Student object
             string? line = sReader.ReadLine();
             while(line != null)
             {
@@ -40,6 +42,7 @@ namespace StudentMS_XiaoFengHuang_2195414.DAL
                 students.Add(s);
                 line = sReader.ReadLine();
             }
+
             sReader.Close();
             return students;
         }
@@ -73,9 +76,6 @@ namespace StudentMS_XiaoFengHuang_2195414.DAL
             {
                 string[] fields = line.Split(',');
                 ListViewItem item = new ListViewItem(fields);
-                //item.SubItems.Add(fields[1]);
-                //item.SubItems.Add(fields[2]);
-                //item.SubItems.Add(fields[3]);
                 lvwStudent.Items.Add(item);
                 line = sReader.ReadLine();
             }
