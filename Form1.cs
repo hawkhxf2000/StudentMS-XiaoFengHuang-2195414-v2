@@ -51,5 +51,26 @@ namespace StudentMS_XiaoFengHuang_2195414
             ListStudents();
             ClearAll();
         }
+
+        private void BtnSave_Click(object sender, EventArgs e)
+        {
+            string id = TbxId.Text;
+            string firstName = TbxFirstName.Text;
+            string lastName = TbxLastName.Text;
+            string phoneNumber = MtxPhoneNumber.Text;
+            Student student = new Student(id, firstName, lastName, phoneNumber);
+
+            StudentDAL.Save(student);
+            ClearAll();
+        }
+
+        private void BtnDelete_Click(object sender, EventArgs e)
+        {
+            foreach(ListViewItem item in LvwStudent.SelectedItems)
+            {
+                var id = item.SubItems[0].Text;
+                StudentDAL.Delete(id);
+            }
+        }
     }
 }

@@ -130,10 +130,16 @@
             // CbxSearch
             // 
             this.CbxSearch.FormattingEnabled = true;
+            this.CbxSearch.Items.AddRange(new object[] {
+            "ID",
+            "first name",
+            "last name",
+            "phone number"});
             this.CbxSearch.Location = new System.Drawing.Point(49, 202);
             this.CbxSearch.Name = "CbxSearch";
             this.CbxSearch.Size = new System.Drawing.Size(158, 23);
             this.CbxSearch.TabIndex = 9;
+            this.CbxSearch.Text = "ID";
             // 
             // label6
             // 
@@ -182,6 +188,7 @@
             this.BtnSave.TabIndex = 14;
             this.BtnSave.Text = "Save";
             this.BtnSave.UseVisualStyleBackColor = true;
+            this.BtnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
             // BtnDelete
             // 
@@ -192,6 +199,7 @@
             this.BtnDelete.TabIndex = 15;
             this.BtnDelete.Text = "Delete";
             this.BtnDelete.UseVisualStyleBackColor = true;
+            this.BtnDelete.Click += new System.EventHandler(this.BtnDelete_Click);
             // 
             // LvwStudent
             // 
