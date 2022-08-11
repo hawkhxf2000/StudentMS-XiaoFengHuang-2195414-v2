@@ -86,7 +86,7 @@ namespace StudentMS_XiaoFengHuang_2195414.DAL
         {
             List<Student> studentList = GetAllStudents();
             List<Student> studentsFound = (from student in studentList
-                                          where (student.Id == id || student.FirstName == firstName || student.LastName == lastName || student.PhoneNumber == phoneNumber)
+                                          where (student.Id == id || student.FirstName.ToLower() == firstName.ToLower() || student.LastName.ToLower() == lastName.ToLower() || student.PhoneNumber == phoneNumber)
                                           select student).ToList();
             return studentsFound;
         }

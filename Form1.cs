@@ -1,5 +1,6 @@
 using StudentMS_XiaoFengHuang_2195414.BLL;
 using StudentMS_XiaoFengHuang_2195414.DAL;
+using System.Text.RegularExpressions;
 
 namespace StudentMS_XiaoFengHuang_2195414
 {
@@ -159,6 +160,8 @@ namespace StudentMS_XiaoFengHuang_2195414
 
                 case 3:
                     phoneNumber = TbxSearch.Text;
+                    string number = Regex.Replace(phoneNumber, @"[^0-9]+", "");
+                    phoneNumber ="(" +number.Substring(0,3) + ")" + number.Substring(3,3) +"-" +number.Substring(6,4);
                     break;
 
                 default:
@@ -166,6 +169,16 @@ namespace StudentMS_XiaoFengHuang_2195414
             }
 
             List<Student> studentsFound = StudentDAL.SearchStudents(id, firstName, lastName, phoneNumber);
+
+            if (studentsFound.Count == 0)
+            {
+                MessageBox.Show("There is no student found");
+                return;
+            }
+            TbxId.Text = studentsFound[0].Id;
+            TbxFirstName.Text = studentsFound[0].FirstName;
+            TbxLastName.Text = studentsFound[0].LastName;
+            MtxPhoneNumber.Text = studentsFound[0].PhoneNumber;
 
             ListSearchResult(studentsFound);
         }
